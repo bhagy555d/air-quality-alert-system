@@ -32,8 +32,10 @@ This project is an advanced, distributed web application designed to monitor rea
 - [ ] **Phase 4:** Build and train the Python predictive ML model.
 - [ ] **Phase 5:** Dockerize the application and deploy it to the cloud.
 
-## ⚙️ Local Setup Instructions
-*(Instructions will be added as the backend and database schemas are finalized in Phase 1).*
+## 🚀 Project Progress Tracker
 
----
-
+### **Phase 1: Core Backend & Notification Engine — COMPLETE ✅**
+- **Database Architecture:** Configured local MySQL instance (`air_quality_db`) with automatic table schema generation via Hibernate ORM.
+- **Data Layer:** Developed `User` and `AqiLog` JPA Entities alongside customized `JpaRepository` interfaces for streamlined database operations.
+- **REST API Endpoint:** Implemented a `UserController` featuring user registration capabilities and an isolated testing endpoint for connection validation.
+- **Automated Notification Service:** Configured JavaMailSender using secure Google App Passwords to successfully deliver real-time, template-driven email alerts.
