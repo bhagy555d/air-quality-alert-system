@@ -39,3 +39,9 @@ This project is an advanced, distributed web application designed to monitor rea
 - **Data Layer:** Developed `User` and `AqiLog` JPA Entities alongside customized `JpaRepository` interfaces for streamlined database operations.
 - **REST API Endpoint:** Implemented a `UserController` featuring user registration capabilities and an isolated testing endpoint for connection validation.
 - **Automated Notification Service:** Configured JavaMailSender using secure Google App Passwords to successfully deliver real-time, template-driven email alerts.
+
+### **Phase 2: Real-Time API Integration — COMPLETE ✅**
+- **Live Data Fetching:** Engineered a RESTful `AqiService` utilizing Spring Boot's `RestTemplate` to autonomously fetch live environmental data.
+- **External API Integration:** Successfully connected to the World Air Quality Index (WAQI) global API network.
+- **JSON Parsing:** Implemented `Jackson ObjectMapper` to parse complex JSON payloads and extract precise, real-time AQI metrics.
+- **Dynamic Logic:** Upgraded the `@Scheduled` automation engine to trigger conditional database queries and email alerts based strictly on live API responses.
