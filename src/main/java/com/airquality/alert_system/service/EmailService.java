@@ -19,7 +19,7 @@ public class EmailService {
 
         // This sets up the actual email structure
         message.setTo(toEmail);
-        message.setSubject("⚠️ Air Quality Alert: " + city);
+        message.setSubject("Air Quality Alert: " + city);
         message.setText("Hello,\n\n" +
                 "The current Air Quality Index (AQI) in " + city + " has reached " + currentAqi + ".\n" +
                 "This exceeds your safe health threshold.\n\n" +
