@@ -45,3 +45,8 @@ This project is an advanced, distributed web application designed to monitor rea
 - **External API Integration:** Successfully connected to the World Air Quality Index (WAQI) global API network.
 - **JSON Parsing:** Implemented `Jackson ObjectMapper` to parse complex JSON payloads and extract precise, real-time AQI metrics.
 - **Dynamic Logic:** Upgraded the `@Scheduled` automation engine to trigger conditional database queries and email alerts based strictly on live API responses.
+
+### **Phase 3: Frontend Web UI — COMPLETE ✅**
+- **User Interface:** Built a responsive, modern HTML5/CSS3 registration portal for users to subscribe to AQI alerts.
+- **Client-Server Communication:** Implemented asynchronous JavaScript (`fetch` API) to send JSON payloads to the backend without page reloads.
+- **Full-Stack Integration:** Successfully connected the frontend web client to the Spring Boot `@RestController`, enabling seamless database insertion and real-time UI feedback.
