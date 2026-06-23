@@ -6,23 +6,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Air Quality Alert System</title>
     <style>
-        /* CSS to make the form look modern and clean */
+        /* Updated CSS to stack the components beautifully */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #eef2f3;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            height: 100vh;
+            padding: 40px 20px;
+            min-height: 100vh;
+            box-sizing: border-box;
             margin: 0;
         }
 
+        .dashboard-card,
         .card {
             background: white;
             padding: 40px;
             border-radius: 12px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
             width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-card {
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .card {
             max-width: 400px;
         }
 
@@ -74,19 +86,53 @@
             background-color: #2980b9;
         }
 
+        .btn-success {
+            background-color: #28a745;
+            width: auto;
+            margin-left: 10px;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
         #message {
             margin-top: 20px;
             text-align: center;
             font-weight: bold;
             min-height: 20px;
         }
+
+        #searchResult {
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
     </style>
 </head>
 
 <body>
 
+    <div class="dashboard-card">
+        <h2>🌍 Global Live Air Quality & AI Forecast</h2>
+        <p style="color: #555; margin-bottom: 20px;">Check the current pollution and tomorrow's AI prediction for any
+            city in the world.</p>
+
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Enter any city (e.g., Paris, Tokyo, Nagpur)">
+            <button class="btn-success" onclick="searchCity()">Search</button>
+        </div>
+
+        <div id="searchResult"></div>
+    </div>
+
     <div class="card">
-        <h2>🌍 AQI Alert Signup</h2>
+        <h2>🔔 AQI Alert Signup</h2>
 
         <form id="registerForm">
             <div class="form-group">
@@ -112,11 +158,42 @@
     </div>
 
     <script>
+        // --- NEW JAVASCRIPT FOR THE SEARCH BAR ---
+        function searchCity() {
+            const city = document.getElementById("searchInput").value;
+            const resultDiv = document.getElementById("searchResult");
+
+            if (!city) {
+                resultDiv.innerHTML = "<span style='color: #e74c3c;'>Please enter a city name!</span>";
+                return;
+            }
+
+            resultDiv.innerHTML = "⏳ Scanning global satellites and consulting AI...";
+
+            fetch(`http://localhost:8080/api/aqi/search?city=${city}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        resultDiv.innerHTML = `❌ <b style="color: #e74c3c;">${data.error}</b>`;
+                    } else {
+                        resultDiv.innerHTML = `
+                            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; display: inline-block; text-align: left; border: 1px solid #dee2e6;">
+                                <h3 style="margin-top: 0; color: #2c3e50;">📍 ${data.city}</h3>
+                                <p style="margin: 5px 0;">🌬️ Live AQI: <strong style="color: #dc3545; font-size: 1.4em;">${data.liveAqi}</strong></p>
+                                <p style="margin: 5px 0;">🤖 AI Prediction for Tomorrow: <strong style="color: #6f42c1; font-size: 1.4em;">${data.predictedAqi}</strong></p>
+                            </div>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    resultDiv.innerHTML = "❌ <span style='color: #e74c3c;'>Error connecting to the server. Is Java running?</span>";
+                });
+        }
+
+        // --- YOUR ORIGINAL JAVASCRIPT FOR THE REGISTRATION FORM ---
         document.getElementById('registerForm').addEventListener('submit', async function (event) {
-            // Stop the page from reloading when the button is clicked
             event.preventDefault();
 
-            // Grab the data the user typed into the boxes
             const userData = {
                 name: document.getElementById('name').value,
                 email: document.getElementById('email').value,
@@ -125,7 +202,6 @@
             };
 
             try {
-                // Send the data to your Spring Boot REST controller
                 const response = await fetch('/api/users/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -135,7 +211,7 @@
                 if (response.ok) {
                     document.getElementById('message').style.color = '#27ae60';
                     document.getElementById('message').innerText = '✅ Successfully registered!';
-                    document.getElementById('registerForm').reset(); // Clear the form
+                    document.getElementById('registerForm').reset();
                 } else {
                     document.getElementById('message').style.color = '#e74c3c';
                     document.getElementById('message').innerText = '❌ Registration failed. Try again.';

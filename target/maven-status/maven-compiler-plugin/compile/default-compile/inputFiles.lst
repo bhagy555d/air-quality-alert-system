@@ -1,0 +1,11 @@
+B:\air-quality-alert-system\alert-system\src\main\java\com\airquality\alert_system\AlertSystemApplication.java
+B:\air-quality-alert-system\alert-system\src\main\java\com\airquality\alert_system\controllers\AqiController.java
+B:\air-quality-alert-system\alert-system\src\main\java\com\airquality\alert_system\controllers\UserController.java
+B:\air-quality-alert-system\alert-system\src\main\java\com\airquality\alert_system\entity\AqiLog.java
+B:\air-quality-alert-system\alert-system\src\main\java\com\airquality\alert_system\entity\User.java
+B:\air-quality-alert-system\alert-system\src\main\java\com\airquality\alert_system\repository\AqiLogRepository.java
+B:\air-quality-alert-system\alert-system\src\main\java\com\airquality\alert_system\repository\UserRepository.java
+B:\air-quality-alert-system\alert-system\src\main\java\com\airquality\alert_system\service\AlertScheduler.java
+B:\air-quality-alert-system\alert-system\src\main\java\com\airquality\alert_system\service\AqiService.java
+B:\air-quality-alert-system\alert-system\src\main\java\com\airquality\alert_system\service\EmailService.java
+B:\air-quality-alert-system\alert-system\src\main\java\com\airquality\alert_system\service\MlPredictionService.java

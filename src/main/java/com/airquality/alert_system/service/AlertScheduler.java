@@ -17,41 +17,57 @@ public class AlertScheduler {
     @Autowired
     private EmailService emailService;
 
-    // We inject your brand new live API service here!
     @Autowired
     private AqiService aqiService;
 
-    // Set to 10 seconds (10000) just for our live test right now.
-    // We will change it back to 1 hour (3600000) after we see it work!
-    @Scheduled(fixedRate = 360000)
-    public void checkAqiAndSendAlerts() {
-        System.out.println("\n⏰ [Background Task] Waking up to check air quality...");
+    @Autowired
+    private MlPredictionService mlPredictionService;
 
-        String cityToCheck = "Nagpur";
+    // Set to 60 seconds for sending alerts
+    @Scheduled(fixedRate = 60000)
+    public void checkAqiAndPredict() {
+        System.out.println("\n⏰ [Background Task] Waking up to scan global cities...");
 
-        // LIVE INTERNET CALL: We deleted the mock data and are asking the API!
-        int liveAqi = aqiService.getRealTimeAqi(cityToCheck);
+        // 1. Ask the database for a list of all unique cities
+        List<String> activeCities = userRepository.findDistinctCities();
 
-        // If the API fails or the token is wrong, it returns -1. Let's catch that
-        // safely.
-        if (liveAqi == -1) {
-            System.out.println("⚠️ Could not fetch live data from WAQI API. Skipping this cycle.");
+        if (activeCities.isEmpty()) {
+            System.out.println("📭 No users registered yet. Going back to sleep.");
             return;
         }
 
-        System.out.println("🌍 SUCCESS! Live AQI for " + cityToCheck + " is currently: " + liveAqi);
+        // 2. Loop through every single city dynamically
+        for (String cityToCheck : activeCities) {
+            System.out.println("\n----------------------------------------");
+            System.out.println("🌍 Scanning city: " + cityToCheck);
 
-        // Search the database using the REAL live number
-        List<User> usersAtRisk = userRepository.findByCityAndAqiThresholdLessThanEqual(cityToCheck, liveAqi);
+            // Fetch live internet data for THIS specific city
+            int liveAqi = aqiService.getRealTimeAqi(cityToCheck);
+            if (liveAqi == -1) {
+                System.out.println("❌ Failed to fetch data for " + cityToCheck + ". Skipping...");
+                continue;
+            }
+            System.out.println("📊 Live AQI is currently: " + liveAqi);
 
-        if (usersAtRisk.isEmpty()) {
-            System.out.println("✅ Air quality is safe for everyone. No alerts needed.");
-            return;
+            // Ask Python for tomorrow's prediction
+            int predictedAqi = mlPredictionService.getPredictedTomorrowAqi(liveAqi);
+            if (predictedAqi != -1) {
+                System.out.println("🤖 AI PREDICTION: Tomorrow's AQI expected to be: " + predictedAqi);
+            }
+
+            // Find users IN THIS SPECIFIC CITY who are in danger
+            List<User> usersAtRisk = userRepository.findByCityAndAqiThresholdLessThanEqual(cityToCheck, liveAqi);
+
+            if (usersAtRisk.isEmpty()) {
+                System.out.println("✅ Air is safe for users in " + cityToCheck + ". No alerts sent.");
+            } else {
+                // Send emails
+                for (User user : usersAtRisk) {
+                    System.out.println("⚠️ Danger! Sending alert to: " + user.getName());
+                    emailService.sendAlertEmail(user.getEmail(), user.getCity(), liveAqi);
+                }
+            }
         }
-
-        for (User user : usersAtRisk) {
-            System.out.println("⚠️ Danger detected! Sending alert to: " + user.getName());
-            emailService.sendAlertEmail("dhakatebhagyashree85@gmail.com", user.getCity(), liveAqi);
-        }
+        System.out.println("----------------------------------------\n");
     }
 }
