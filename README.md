@@ -50,3 +50,9 @@ This project is an advanced, distributed web application designed to monitor rea
 - **User Interface:** Built a responsive, modern HTML5/CSS3 registration portal for users to subscribe to AQI alerts.
 - **Client-Server Communication:** Implemented asynchronous JavaScript (`fetch` API) to send JSON payloads to the backend without page reloads.
 - **Full-Stack Integration:** Successfully connected the frontend web client to the Spring Boot `@RestController`, enabling seamless database insertion and real-time UI feedback.
+
+### **Phase 4: Full-Stack AI Integration & Live Search Dashboard — COMPLETE ✅**
+- **Machine Learning Microservice:** Engineered a standalone Python/Flask server hosting a `RandomForestRegressor` trained to predict future AQI based on meteorological data.
+- **Dynamic Global Scanner:** Upgraded the Spring Boot cron scheduler to dynamically fetch unique user cities using custom Hibernate `@Query` methods, optimizing API calls and automating personalized email alerts.
+- **Live Search REST API:** Built a dedicated Spring Boot controller to asynchronously route frontend queries to the WAQI satellite API and the local Python AI server.
+- **Interactive Web Dashboard:** Designed a responsive frontend UI using HTML, CSS, and vanilla JavaScript (`fetch` API) allowing users to search any global city and instantly view real-time pollution levels alongside tomorrow's AI prediction.  
