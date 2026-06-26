@@ -1,5 +1,6 @@
 package com.airquality.alert_system.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -10,10 +11,14 @@ import java.util.Map;
 @Service
 public class MlPredictionService {
 
+    // 1. Inject the cloud URL from application.properties
+    @Value("${ml.service.url}")
+    private String mlServiceUrl;
+
     public int getPredictedTomorrowAqi(int todaysLiveAqi) {
         try {
-            // Pointing directly to your active Python server
-            String pythonApiUrl = "http://127.0.0.1:5000/predict";
+            // 2. Combine the base cloud URL with the specific /predict endpoint
+            String pythonApiUrl = mlServiceUrl + "/predict";
 
             Map<String, Integer> requestData = new HashMap<>();
             requestData.put("temp", 35);
