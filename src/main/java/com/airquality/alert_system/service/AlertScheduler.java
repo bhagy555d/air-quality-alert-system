@@ -60,14 +60,21 @@ public class AlertScheduler {
 
             if (usersAtRisk.isEmpty()) {
                 System.out.println("✅ Air is safe for users in " + cityToCheck + ". No alerts sent.");
-            } else {
+           } else {
                 // Send emails
                 for (User user : usersAtRisk) {
                     System.out.println("⚠️ Danger! Sending alert to: " + user.getName());
-                    emailService.sendAlertEmail(user.getEmail(), user.getCity(), liveAqi);
+                    
+                    try {
+                        emailService.sendAlertEmail(user.getEmail(), user.getCity(), liveAqi);
+                        System.out.println("✅ Email successfully sent to Google!");
+                    } catch (Exception e) {
+                        System.out.println("❌ EMAIL FAILED TO SEND. Reason:");
+                        e.printStackTrace(); // This prints the exact Google error to Render!
+                    }
                 }
-            }
-        }
         System.out.println("----------------------------------------\n");
     }
+}
+}
 }
