@@ -169,8 +169,8 @@
             }
 
             resultDiv.innerHTML = "⏳ Scanning global satellites and consulting AI...";
-
-            fetch(`http://localhost:8080/api/aqi/search?city=${city}`)
+            fetch(`/api/aqi/search?city=${city}`)
+            
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {
