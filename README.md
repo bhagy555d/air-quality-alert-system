@@ -1,6 +1,6 @@
-# 🌍 Automated Air Quality & Health Alert System
+🌍 AI-Powered Air Quality & Health Alert System
 
-> An intelligent, real-time environmental monitoring dashboard featuring predictive analytics and personalized health alerts. 
+> An intelligent, real-time environmental monitoring dashboard featuring predictive analytics and personalized health alerts.
 
 ## 📖 Project Overview
 This project is an advanced, distributed web application designed to monitor real-time Air Quality Index (AQI) data across major cities (e.g., Nagpur, Pune, Mumbai). Going beyond standard data visualization, this system integrates scheduled third-party API polling, machine learning-based forecasting, and a localized notification engine that pushes health alerts to vulnerable users when pollution crosses specific safety thresholds.
@@ -10,19 +10,21 @@ This project is an advanced, distributed web application designed to monitor rea
 * **Personalized Health Notifications:** A subscription-based alert system that notifies users (via Email/SMS) when the AQI poses a threat to their specific health conditions (e.g., Asthma, Elderly).
 * **Predictive Analytics:** A machine learning module to forecast short-term pollution trends based on historical time-series data.
 * **Interactive Dashboard:** A dynamic Single Page Application (SPA) visualizing current metrics and historical trends using robust charting libraries.
+* **Cloud-Native Architecture:** Fully deployed microservice architecture utilizing environment variables for secure credential management.
 
 ## 🛠️ Technology Stack
-* **Frontend:** React.js / HTML5 / CSS3 / Chart.js
-* **Backend:** Java (Spring Boot)
-* **Database:** MySQL / PostgreSQL
-* **Machine Learning:** Python (Scikit-Learn / Pandas)
-* **External APIs:** WAQI API, JavaMail / Twilio (Notifications)
-* **DevOps:** Docker (Containerization)
+* **Frontend:** HTML5 / CSS3 / Vanilla JavaScript (fetch API)
+* **Backend:** Java (Spring Boot) / Hibernate ORM
+* **Database:** MySQL (Cloud-Hosted via Aiven)
+* **Machine Learning:** Python / Flask / Scikit-Learn (RandomForestRegressor)
+* **External APIs:** WAQI API (Live Data), SendGrid (SMTP Email Engine)
+* **Cloud & DevOps:** Render (PaaS), Cloud Environment Variables
 
 ## 🏗️ System Architecture
-1. **Data Ingestion:** A Spring Boot `@Scheduled` task queries the WAQI API hourly and persists the JSON payload into the SQL database.
-2. **Notification Engine:** A background worker evaluates the latest AQI data against registered user health profiles and dispatches alerts if thresholds are breached.
-3. **Client Interface:** The React frontend consumes RESTful endpoints provided by the Java backend to render localized, interactive charts.
+1. **Data Ingestion:** A Spring Boot `@Scheduled` task queries the WAQI API hourly.
+2. **Notification Engine:** A background worker evaluates the latest AQI data against registered user health profiles.
+3. **SMTP Gateway:** If thresholds are breached, the system authenticates with SendGrid via injected environment variables to dispatch alerts.
+4. **Client Interface:** The frontend consumes RESTful endpoints provided by the Java backend to render localized data and AI predictions.
 
 ## 🗺️ Project Roadmap
 - [x] Define project scope and repository setup.
@@ -30,7 +32,7 @@ This project is an advanced, distributed web application designed to monitor rea
 - [ ] **Phase 2:** Integrate the WAQI API and build the automated hourly data fetcher.
 - [ ] **Phase 3:** Develop the interactive frontend dashboard.
 - [ ] **Phase 4:** Build and train the Python predictive ML model.
-- [ ] **Phase 5:** Dockerize the application and deploy it to the cloud.
+- [ ] **Phase 5:** Migrate database to the cloud and deploy the Spring Boot microservice.
 
 ## 🚀 Project Progress Tracker
 
@@ -55,4 +57,10 @@ This project is an advanced, distributed web application designed to monitor rea
 - **Machine Learning Microservice:** Engineered a standalone Python/Flask server hosting a `RandomForestRegressor` trained to predict future AQI based on meteorological data.
 - **Dynamic Global Scanner:** Upgraded the Spring Boot cron scheduler to dynamically fetch unique user cities using custom Hibernate `@Query` methods, optimizing API calls and automating personalized email alerts.
 - **Live Search REST API:** Built a dedicated Spring Boot controller to asynchronously route frontend queries to the WAQI satellite API and the local Python AI server.
-- **Interactive Web Dashboard:** Designed a responsive frontend UI using HTML, CSS, and vanilla JavaScript (`fetch` API) allowing users to search any global city and instantly view real-time pollution levels alongside tomorrow's AI prediction.  
+- **Interactive Web Dashboard:** Designed a responsive frontend UI using HTML, CSS, and vanilla JavaScript (`fetch` API) allowing users to search any global city and instantly view real-time pollution levels alongside tomorrow's AI prediction.
+
+### **Phase 5: Cloud Deployment & Architecture Optimization — COMPLETE ✅**
+- **Cloud Database Migration:** Successfully migrated the local relational database to an Aiven Cloud MySQL instance, ensuring high availability.
+- **PaaS Deployment:** Deployed the Spring Boot application to Render, establishing a continuous live background worker for the scheduling engine.
+- **Security & Configuration:** Decoupled sensitive credentials from the codebase by injecting API keys, database URIs, and SMTP passwords via Render Environment Variables.
+- **Strategic Vendor Pivot:** Re-engineered the SMTP pipeline, migrating from a rigid legacy provider to SendGrid to bypass strict ISP blocks and ensure reliable, real-time alert delivery.
