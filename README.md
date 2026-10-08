@@ -1,4 +1,4 @@
-## 🌍 AI-Powered Air Quality Alert System
+## 🌍 AI-Powered Air Quality  & Health Alert System
 
 > An intelligent, real-time environmental monitoring dashboard featuring predictive analytics and personalized health alerts.
 
